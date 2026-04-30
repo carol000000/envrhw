@@ -1,11 +1,15 @@
 from ursina import *
 
-# 初始化 Ursina 並優化畫質
+# 初始化 Ursina
 app = Ursina(antialiasing=True)
 Texture.default_filtering = 'mipmap'
 
+# --- [設定區：統一資料夾路徑] ---
+# 確保你的程式檔旁邊有一個資料夾叫做 img
+IMG_DIR = 'img/'
+
 # --- [1. 場景資料庫] ---
-# 你可以在這裡輕鬆擴展到 15 個場景
+# 字典內的檔名不需要再寫 img/，系統會自動拼接
 SCENE_DATA = {
     'home': {
         'img': '000.jpg',
@@ -28,12 +32,12 @@ SCENE_DATA = {
         'info': 'info_office.png',
         'audio': 'audio_office.mp3'
     },
-    # 這裡繼續往下寫到 15 個...
+    # 接下來的 12 個場景依此類推填寫...
 }
 
 # --- [2. 核心實體建立] ---
 
-# 街景球體：scale 使用負值來翻轉法線，rotation_z 修正上下顛倒
+# 街景球體：處理旋轉與反轉法線
 panorama = Entity(
     model='sphere', 
     scale=-500, 
@@ -41,21 +45,20 @@ panorama = Entity(
     unlit=True
 )
 
-# 當前場景 ID
 current_scene = 'home'
 
-# 說明圖片實體：使用 Sprite 並固定在 camera.ui
+# 說明圖片實體
 info_overlay = Sprite(
     parent=camera.ui,
     enabled=False,
     scale=0.6,
-    z=-1  # 確保在最前方
+    z=-1 
 )
 
 # --- [3. 核心功能函式] ---
 
 def switch_scene(scene_id):
-    """切換場景的主邏輯"""
+    """跳轉場景邏輯"""
     global current_scene
     if scene_id not in SCENE_DATA:
         print(f"錯誤：找不到場景 {scene_id}")
@@ -64,64 +67,68 @@ def switch_scene(scene_id):
     current_scene = scene_id
     data = SCENE_DATA[scene_id]
     
-    # 更換背景圖並確保畫質
-    new_tex = load_texture(data['img'])
-    panorama.texture = new_tex
-    if panorama.texture:
-        panorama.texture.filtering = 'mipmap'
+    # 自動拼接路徑載入街景：img/xxx.jpg
+    panorama.texture = load_texture(IMG_DIR + data['img'])
     
-    # 切換場景時自動隱藏上一個場景的說明圖
+    # 切換場景時隱藏說明圖
     info_overlay.enabled = False
-    print(f"目前位置：{scene_id}")
+    print(f"目前場景：{scene_id}")
 
 def toggle_info():
-    """顯示或隱藏當前場景的說明圖片"""
-    img_path = SCENE_DATA[current_scene].get('info')
-    if img_path:
-        info_overlay.texture = load_texture(img_path)
+    """顯示或隱藏說明圖"""
+    data = SCENE_DATA[current_scene]
+    img_name = data.get('info')
+    if img_name:
+        # 自動拼接路徑載入說明圖：img/info_xxx.png
+        info_overlay.texture = load_texture(IMG_DIR + img_name)
         info_overlay.enabled = not info_overlay.enabled
 
 def play_audio():
-    """播放當前場景的語音 (預留位)"""
-    audio_path = SCENE_DATA[current_scene].get('audio')
-    if audio_path:
-        print(f"系統：正在播放語音檔案 {audio_path}")
-        # 未來實作：Audio(audio_path, loop=False, autoplay=True)
+    """語音播放預留位"""
+    audio_name = SCENE_DATA[current_scene].get('audio')
+    if audio_name:
+        # 未來實作可改為：Audio(IMG_DIR + audio_name)
+        print(f"系統：準備播放語音 {IMG_DIR + audio_name}")
 
 # --- [4. 平面 UI 按鈕區 (camera.ui)] ---
 
-# 設定按鈕通用樣式
-button_y = -0.4  # 按鈕統一高度
+button_y = -0.4
 
-# 回首頁
-btn_home = Button(text='HOME', scale=(.12, .05), x=-0.6, y=button_y, parent=camera.ui, color=color.dark_gray)
-btn_home.on_click = lambda: switch_scene('home')
+# 建立按鈕的捷徑函式，節省重複代碼
+def create_ui_button(label, x_pos, color_val, func):
+    b = Button(
+        text=label, 
+        scale=(.12, .05), 
+        x=x_pos, 
+        y=button_y, 
+        parent=camera.ui, 
+        color=color_val
+    )
+    b.on_click = func
+    return b
 
-# 上一個景點
-btn_prev = Button(text='PREV', scale=(.12, .05), x=-0.4, y=button_y, parent=camera.ui, color=color.orange)
-btn_prev.on_click = lambda: switch_scene(SCENE_DATA[current_scene]['prev'])
-
-# 下一個景點
-btn_next = Button(text='NEXT', scale=(.12, .05), x=-0.2, y=button_y, parent=camera.ui, color=color.orange)
-btn_next.on_click = lambda: switch_scene(SCENE_DATA[current_scene]['next'])
-
-# 顯示圖片說明
-btn_info = Button(text='INFO', scale=(.12, .05), x=0.4, y=button_y, parent=camera.ui, color=color.azure)
-btn_info.on_click = toggle_info
-
-# 播放語音
-btn_audio = Button(text='VOICE', scale=(.12, .05), x=0.6, y=button_y, parent=camera.ui, color=color.green)
-btn_audio.on_click = play_audio
+# 生成五個功能按鈕
+btn_home = create_ui_button('HOME', -0.6, color.dark_gray, lambda: switch_scene('home'))
+btn_prev = create_ui_button('PREV', -0.4, color.orange, lambda: switch_scene(SCENE_DATA[current_scene]['prev']))
+btn_next = create_ui_button('NEXT', -0.2, color.orange, lambda: switch_scene(SCENE_DATA[current_scene]['next']))
+btn_info = create_ui_button('INFO', 0.4, color.azure, toggle_info)
+btn_audio = create_ui_button('VOICE', 0.6, color.green, play_audio)
 
 # --- [5. 測試輔助與啟動] ---
 
-# 讓圖片說明點擊後可以消失
+# 點擊說明圖本身可以關閉它
 info_overlay.add_script(Button(parent=info_overlay, color=color.clear, on_click=toggle_info))
 
-# 電腦測試攝影機：滑鼠右鍵旋轉，左鍵點擊按鈕
+# 電腦開發測試輔助：點擊畫面輸出座標 (幫你快速找未來要放方塊的位置)
+def input(key):
+    if key == 'left mouse down':
+        if mouse.world_point:
+            print(f"點擊座標：{mouse.world_point}")
+
+# 開發者相機
 EditorCamera()
 
-# 初始進入第一個場景
+# 初始場景
 switch_scene('home')
 
 app.run()
