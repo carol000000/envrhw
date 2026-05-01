@@ -18,123 +18,124 @@ SCENE_DATA = {
         'img': '000.jpg', 
         'map_img': 'mmap000.png', 
         'info_img': '000info.png',
+        'audio': '000.mp3',
         'label_img': 'school.png',
         'next': '001', 'prev': '012'
-        'audio',
     },
     '001': {
         'img': '001.jpg', 
         'map_img': 'mmap001.png', 
         'info_img': '001info.png',
+        'audio': '001.mp3',
         'label_img': 'Campher Boulevard.png',
         'next': '002', 'prev': '000'
-        'audio',
     },
     '002': {
         'img': '002.jpg', 
         'map_img': 'mmap002.png', 
         'info_img': '002info.png',
+        'audio': '002.mp3',
         'label_img': 'The Old Red Cedar.png',
         'next': '003', 'prev': '001'
-        'audio',
     },
     '003': {
         'img': '003.jpg', 
         'map_img': 'mmap003.png', 
         'info_img': '003info.png',
         'label_img': 'Government Building.png',
-        'next': '004', 'prev': '002'
-        'audio',
+        'next': '004', 'prev': '002',
+        'audio': '003.mp3' # 補上冒號與檔名
     },
     '004': {
         'img': '004.jpg', 
         'map_img': 'mmap004.png', 
         'info_img': '004info.png',
         'label_img': 'Village Archway.png',
-        'next': '005', 'prev': '003'
-        'audio',
+        'next': '005', 'prev': '003',
+        'audio': '004.mp3'
     },
     '005': {
         'img': '005.jpg', 
         'map_img': 'mmap005.png', 
         'info_img': '005info.png',
         'label_img': 'Fulong Temple.png',
-        'next': '006', 'prev': '004'
-        'audio',
+        'next': '006', 'prev': '004',
+        'audio': '005.mp3'
     },
     '006': {
         'img': '006.jpg', 
         'map_img': 'mmap006.png', 
         'info_img': '006info.png',
         'label_img': 'Bodhi Boulevard.png',
-        'next': '007', 'prev': '005'
-        'audio',
+        'next': '007', 'prev': '005',
+        'audio': '006.mp3'
     },
     '007': {
         'img': '007.jpg', 
         'map_img': 'mmap007.png', 
         'info_img': '007info.png',
         'label_img': 'Cheng Yuan Tzuen.png',
-        'next': '008', 'prev': '006'
-        'audio',
+        'next': '008', 'prev': '006',
+        'audio': '007.mp3'
     },
     '008': {
         'img': '008.jpg', 
         'map_img': 'mmap008.png', 
         'info_img': '008info.png',
         'label_img': 'Chung Hsing Botanical Garden.png',
-        'next': '009', 'prev': '007'
-        'audio',
+        'next': '009', 'prev': '007',
+        'audio': '008.mp3'
     },
     '009': {
         'img': '009.jpg', 
         'map_img': 'mmap009.png', 
         'info_img': '009info.png',
         'label_img': 'Chung Hsing Hall.png',
-        'next': '010', 'prev': '008'
-        'audio',
+        'next': '010', 'prev': '008',
+        'audio': '009.mp3'
     },
     '010': {
         'img': '010.jpg', 
         'map_img': 'mmap010.png', 
         'info_img': '010info.png',
         'label_img': 'Central Taiwan Science Park.png',
-        'next': '011', 'prev': '009'
-        'audio',
+        'next': '011', 'prev': '009',
+        'audio': '010.mp3'
     },
     '011': {
         'img': '011.jpg', 
         'map_img': 'mmap011.png', 
         'info_img': '011info.png',
         'label_img': 'Taiwan Historica.png',
-        'next': '012', 'prev': '010'
-        'audio',
+        'next': '012', 'prev': '010',
+        'audio': '011.mp3'
     },
     '012': {
         'img': '012-2.jpg', 
         'map_img': 'mmap012.png', 
         'info_img': '012info.png',
         'label_img': 'Traditional Market.png',
-        'next': '000', 'prev': '011' # 回到首頁，形成迴圈
-        'audio',
+        'next': '000', 'prev': '011',
+        'audio': '012.mp3'
     },
     '121': {
         'img': '012-1.jpg', 
         'map_img': 'mmap121.png', 
         'info_img': '121info.png',
         'label_img': 'Traditional Market1.png',
-        'next': '012', 'prev': '012' 
-        'audio',
+        'next': '012', 'prev': '012',
+        'audio': '121.mp3'
     },
     '123': {
         'img': '012-3.jpg', 
         'map_img': 'mmap123.png', 
         'info_img': '123info.png',
         'label_img': 'Traditional Market3.png',
-        'next': '012', 'prev': '012' 
-        'audio',
-    },
+        'next': '012', 'prev': '012',
+        'audio': '123.mp3'
+    }
 }
+
 # ---------------------------------------------------------
 # 3. 核心物件
 # ---------------------------------------------------------
@@ -167,10 +168,17 @@ info_overlay = Sprite(
 # ---------------------------------------------------------
 
 def switch_scene(scene_id):
-    global current_scene
+    global current_scene, current_audio # 這裡也要加 global
     if scene_id not in SCENE_DATA: return
+    
+    # 換場景時切斷聲音
+    if current_audio:
+        current_audio.stop()
     current_scene = scene_id
     data = SCENE_DATA[scene_id]
+
+    if current_audio:
+        current_audio.stop()
     
     # 1. 換背景全景圖
     panorama.texture = load_texture(IMG_DIR + data['img'])
@@ -195,14 +203,30 @@ def switch_scene(scene_id):
     info_overlay.enabled = False
 
 def toggle_ui(ui_element, data_key):
-    """根據當前場景資料動態顯示圖片"""
+    # 關鍵：告訴 Python 這是在外面定義過的那個變數
+    global current_audio  
+    
     data = SCENE_DATA[current_scene]
     if data_key in data:
         path = IMG_DIR + data[data_key]
         if os.path.exists(path):
             ui_element.texture = load_texture(path)
             ui_element.enabled = not ui_element.enabled
-            # 如果開啟時想確保地圖跟資訊圖不會同時重疊，可以加這兩行：
+            
+            # --- 語音邏輯 ---
+            if ui_element == info_overlay:
+                # 現在可以安全地檢查與停止舊音訊了
+                if current_audio:
+                    current_audio.stop()
+                
+                if ui_element.enabled and 'audio' in data:
+                    audio_path = IMG_DIR + data['audio']
+                    if os.path.exists(audio_path):
+                        current_audio = Audio(audio_path, loop=False, autoplay=True)
+                elif not ui_element.enabled and current_audio:
+                    current_audio.stop()
+            # ----------------
+
             if ui_element == info_overlay: map_overlay.enabled = False
             if ui_element == map_overlay: info_overlay.enabled = False
 
