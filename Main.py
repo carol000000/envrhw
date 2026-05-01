@@ -16,94 +16,108 @@ IMG_DIR = 'img/'.replace('\\', '/')
 SCENE_DATA = {
     '000': {
         'img': '000.jpg', 
-        'map_img': 'mmap.png', 
+        'map_img': 'mmap000.png', 
         'info_img': 'info_000.png',
-        'label_img': '',
+        'label_img': 'school.png',
         'next': '001', 'prev': '012'
     },
     '001': {
         'img': '001.jpg', 
-        'map_img': 'map_001.png', 
+        'map_img': 'mmap001.png', 
         'info_img': 'info_001.png',
         'label_img': 'Campher Boulevard.png',
         'next': '002', 'prev': '000'
     },
     '002': {
         'img': '002.jpg', 
-        'map_img': 'map_002.png', 
+        'map_img': 'mmap002.png', 
         'info_img': 'info_002.png',
         'label_img': 'The Old Red Cedar.png',
         'next': '003', 'prev': '001'
     },
     '003': {
         'img': '003.jpg', 
-        'map_img': 'map_003.png', 
+        'map_img': 'mmap003.png', 
         'info_img': 'info_003.png',
         'label_img': 'Government Building.png',
         'next': '004', 'prev': '002'
     },
     '004': {
         'img': '004.jpg', 
-        'map_img': 'map_004.png', 
+        'map_img': 'mmap004.png', 
         'info_img': 'info_004.png',
         'label_img': 'Village Archway.png',
         'next': '005', 'prev': '003'
     },
     '005': {
         'img': '005.jpg', 
-        'map_img': 'map_005.png', 
+        'map_img': 'mmap005.png', 
         'info_img': 'info_005.png',
         'label_img': 'Fulong Temple.png',
         'next': '006', 'prev': '004'
     },
     '006': {
         'img': '006.jpg', 
-        'map_img': 'map_006.png', 
+        'map_img': 'mmap006.png', 
         'info_img': 'info_006.png',
         'label_img': 'Bodhi Boulevard.png',
         'next': '007', 'prev': '005'
     },
     '007': {
         'img': '007.jpg', 
-        'map_img': 'map_007.png', 
+        'map_img': 'mmap007.png', 
         'info_img': 'info_007.png',
         'label_img': 'Cheng Yuan Tzuen.png',
         'next': '008', 'prev': '006'
     },
     '008': {
         'img': '008.jpg', 
-        'map_img': 'map_008.png', 
+        'map_img': 'mmap008.png', 
         'info_img': 'info_008.png',
         'label_img': 'Chung Hsing Botanical Garden.png',
         'next': '009', 'prev': '007'
     },
     '009': {
         'img': '009.jpg', 
-        'map_img': 'map_009.png', 
+        'map_img': 'mmap009.png', 
         'info_img': 'info_009.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Chung Hsing Hall.png',
         'next': '010', 'prev': '008'
     },
     '010': {
         'img': '010.jpg', 
-        'map_img': 'map_010.png', 
+        'map_img': 'mmap010.png', 
         'info_img': 'info_010.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Central Taiwan Science Park.png',
         'next': '011', 'prev': '009'
     },
     '011': {
         'img': '011.jpg', 
-        'map_img': 'map_011.png', 
+        'map_img': 'mmap011.png', 
         'info_img': 'info_011.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Taiwan Historica.png',
         'next': '012', 'prev': '010'
     },
     '012': {
         'img': '012-2.jpg', 
-        'map_img': 'map_012.png', 
+        'map_img': 'mmap012.png', 
         'info_img': 'info_012.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Traditional Market.png',
         'next': '000', 'prev': '011' # 回到首頁，形成迴圈
+    },
+    '121': {
+        'img': '012-1.jpg', 
+        'map_img': 'mmap121.png', 
+        'info_img': 'info_012.png',
+        'label_img': 'Traditional Market1.png',
+        'next': '012', 'prev': '012' 
+    },
+    '123': {
+        'img': '012-1.jpg', 
+        'map_img': 'mmap123.png', 
+        'info_img': 'info_012.png',
+        'label_img': 'Traditional Market3.png',
+        'next': '012', 'prev': '012' 
     },
 }
 # ---------------------------------------------------------
