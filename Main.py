@@ -18,63 +18,63 @@ SCENE_DATA = {
         'img': '000.jpg', 
         'map_img': 'mmap.png', 
         'info_img': 'info_000.png',
-        'label_img': 'label_000.png',
+        'label_img': '',
         'next': '001', 'prev': '012'
     },
     '001': {
         'img': '001.jpg', 
         'map_img': 'map_001.png', 
         'info_img': 'info_001.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Campher Boulevard.png',
         'next': '002', 'prev': '000'
     },
     '002': {
         'img': '002.jpg', 
         'map_img': 'map_002.png', 
         'info_img': 'info_002.png',
-        'label_img': 'label_000.png',
+        'label_img': 'The Old Red Cedar.png',
         'next': '003', 'prev': '001'
     },
     '003': {
         'img': '003.jpg', 
         'map_img': 'map_003.png', 
         'info_img': 'info_003.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Government Building.png',
         'next': '004', 'prev': '002'
     },
     '004': {
         'img': '004.jpg', 
         'map_img': 'map_004.png', 
         'info_img': 'info_004.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Village Archway.png',
         'next': '005', 'prev': '003'
     },
     '005': {
         'img': '005.jpg', 
         'map_img': 'map_005.png', 
         'info_img': 'info_005.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Fulong Temple.png',
         'next': '006', 'prev': '004'
     },
     '006': {
         'img': '006.jpg', 
         'map_img': 'map_006.png', 
         'info_img': 'info_006.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Bodhi Boulevard.png',
         'next': '007', 'prev': '005'
     },
     '007': {
         'img': '007.jpg', 
         'map_img': 'map_007.png', 
         'info_img': 'info_007.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Cheng Yuan Tzuen.png',
         'next': '008', 'prev': '006'
     },
     '008': {
         'img': '008.jpg', 
         'map_img': 'map_008.png', 
         'info_img': 'info_008.png',
-        'label_img': 'label_000.png',
+        'label_img': 'Chung Hsing Botanical Garden.png',
         'next': '009', 'prev': '007'
     },
     '009': {
