@@ -36,7 +36,7 @@ python Main.py
 ## 如何下載與安裝
 -[安裝Pythone](https://www.python.org/downloads/)
 <br>
--[安裝Pythone](https://code.visualstudio.com/)
+-[安裝VS Code](https://code.visualstudio.com/)
 ![替代文字](img/md001.png)
 <br>
 -下載後解壓縮
